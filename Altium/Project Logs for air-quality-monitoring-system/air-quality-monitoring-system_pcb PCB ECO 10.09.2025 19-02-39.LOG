@@ -1,0 +1,13 @@
+Change Component Description : Designator=VR1 Old Description=TRIMMER - 1/4in SQ ST CERMET New Description=TRIMMER - 1/4in SQ ST CERMET | Bourns 3362P-1-102
+Added Component: Designator=U1(MH-Z14A)
+Add component: Footprint Not Found QFN100P300X300X100-7N
+Add Pin To Net: Unknown Pin: Pin U1-6
+Add Pin To Net: Unknown Pin: Pin U1-12
+Add Pin To Net: Unknown Pin: Pin U1-15
+Add Pin To Net: Unknown Pin: Pin U4-1
+Add Pin To Net: Unknown Pin: Pin U4-2
+Add Pin To Net: Unknown Pin: Pin U4-5
+Add Pin To Net: Unknown Pin: Pin U4-6
+Add Pin To Net: Unknown Pin: Pin U4-PAD
+Added Member To Class: ClassName=Sheet1 Member=Component U1 MH-Z14A
+Add Class Member: Failed to add class member : Component U4 HTU21D
