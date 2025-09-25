@@ -1,0 +1,15 @@
+Added Component: Designator=U(QFN100P300X300X100-7N)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "HTU21D"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "DFN-6 TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/HTU21D/TE%20Connectivity%20ALCOSWITCH%20Switches/view-part/562219/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "TE_purchase_URL"; Value = "https://www.te.com/usa-en/product-CAT-HSC0004.html?te_bu=Cor&te_type=disp&te_campaign=seda_glo_cor-seda-global-disp-prtnr-fy19-seda-model-bom-cta_sma-317_1&elqCampaignId=32493"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetQ1_2 Pin=U-1
+Added Pin To Net: NetName=GND Pin=U-2
+Added Pin To Net: NetName=+3.3V Pin=U-5
+Added Pin To Net: NetName=NetQ2_2 Pin=U-6
+Added Pin To Net: NetName=GND Pin=U-PAD
+Added Member To Class: ClassName=Sheet1 Member=Component U HTU21D
