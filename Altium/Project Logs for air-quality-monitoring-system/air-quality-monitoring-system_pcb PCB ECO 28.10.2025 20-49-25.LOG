@@ -1,0 +1,19 @@
+Added Component: Designator=U5(MODULE_LCD-16X2)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/LCD-16X2/Gravitech/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Gravitech"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "LCD-16X2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/LCD-16X2/Gravitech/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=U5-1
+Added Pin To Net: NetName=+5V Pin=U5-2
+Added Pin To Net: NetName=NetR7_1 Pin=U5-3
+Added Pin To Net: NetName=NetU5_4 Pin=U5-4
+Added Pin To Net: NetName=NetU5_5 Pin=U5-5
+Added Pin To Net: NetName=NetU5_6 Pin=U5-6
+Added Pin To Net: NetName=NetU5_11 Pin=U5-11
+Added Pin To Net: NetName=NetU5_12 Pin=U5-12
+Added Pin To Net: NetName=NetU5_13 Pin=U5-13
+Added Pin To Net: NetName=NetU5_14 Pin=U5-14
+Added Pin To Net: NetName=NetQ3_3 Pin=U5-16
+Added Member To Class: ClassName=Sheet1 Member=Component U5 LCD-16X2
