@@ -1,0 +1,19 @@
+Removed Pin From Net: NetName=GND Pin=J1-A1
+Removed Pin From Net: NetName=+5V Pin=J1-A4
+Removed Pin From Net: NetName=+5V Pin=J1-A9
+Removed Pin From Net: NetName=GND Pin=J1-A12
+Removed Pin From Net: NetName=GND Pin=J1-B1
+Removed Pin From Net: NetName=+5V Pin=J1-B4
+Removed Pin From Net: NetName=+5V Pin=J1-B9
+Removed Pin From Net: NetName=GND Pin=J1-B12
+Removed Pin From Net: NetName=GND Pin=J1-S1
+Removed Pin From Net: NetName=GND Pin=J1-S2
+Removed Pin From Net: NetName=GND Pin=J1-S3
+Removed Pin From Net: NetName=GND Pin=J1-S4
+Removed Pin From Net: NetName=GND Pin=J1-S5
+Removed Pin From Net: NetName=GND Pin=J1-S6
+Change Component Footprint: Designator=J1 Old Footprint=GCT_USB4081-03-A_REV0.1 New Footprint=216990-0002_MOL
+Added Pin To Net: NetName=GND Pin=J1-A1/B12
+Added Pin To Net: NetName=+5V Pin=J1-A4/B9
+Added Pin To Net: NetName=GND Pin=J1-B1/A12
+Added Pin To Net: NetName=+5V Pin=J1-B4/A9

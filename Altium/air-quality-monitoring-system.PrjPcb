@@ -84,6 +84,23 @@ GenerateClassCluster=0
 DocumentUniqueId=MMLORXIR
 
 [Document3]
+DocumentPath=..\..\..\..\bonda\Downloads\TYPE-C-31-M-12\HRO_TYPE-C-31-M-12.PcbLib
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=NXNAJTMT
+
+[Document4]
 DocumentPath=..\..\..\..\bonda\Downloads\HTU21D\SnapEDApcb.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -100,7 +117,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=GMIVLSFD
 
-[Document4]
+[Document5]
 DocumentPath=PcbLib1.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -117,7 +134,24 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YDNRGEXO
 
-[Document5]
+[Document6]
+DocumentPath=..\..\..\..\bonda\Downloads\TYPE-C-31-M-12\TYPE-C-31-M-12.SchLib
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=MKXOHJSO
+
+[Document7]
 DocumentPath=..\..\..\..\bonda\Downloads\HTU21D\SnapEDAsch.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -134,7 +168,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JVHTISAB
 
-[Document6]
+[Document8]
 DocumentPath=Schlib1.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -151,7 +185,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JBFMUCIQ
 
-[Document7]
+[Document9]
 DocumentPath=air-quality-monitoring-system.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -168,7 +202,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document8]
+[Document10]
 DocumentPath=..\..\..\..\bonda\Downloads\HTU21D.IntLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -185,7 +219,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document9]
+[Document11]
 DocumentPath=..\..\..\..\bonda\Downloads\LCD-16X2.IntLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -202,7 +236,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document10]
+[Document12]
 DocumentPath=..\..\..\..\bonda\Downloads\MTSW-104-07-G-S-200.IntLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -219,7 +253,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document11]
+[Document13]
 DocumentPath=..\..\..\..\bonda\Downloads\USB4081-03-A_REV0.1\USB4081-03-A_REV0.1.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -236,7 +270,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=GTZAHQET
 
-[Document12]
+[Document14]
 DocumentPath=..\..\..\..\bonda\Downloads\USB4081-03-A_REV0.1\GCT_USB4081-03-A_REV0.1.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -252,6 +286,23 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=GWWNFLRC
+
+[Document15]
+DocumentPath=..\..\..\..\bonda\Downloads\Telegram Desktop\2169900002.IntLib
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
 
 [GeneratedDocument1]
 DocumentPath=Project Outputs for air-quality-monitoring-system\Design Rule Check - air-quality-monitoring-system_pcb.html

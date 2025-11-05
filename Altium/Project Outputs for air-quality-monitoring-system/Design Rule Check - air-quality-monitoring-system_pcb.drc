@@ -1,9 +1,15 @@
 Protel Design System Design Rule Check
 PCB File : C:\Users\Public\Documents\Altium\air-quality-monitoring-system\air-quality-monitoring-system_pcb.PcbDoc
-Date     : 29.10.2025
-Time     : 17:50:42
+Date     : 05.11.2025
+Time     : 13:12:07
 
 Processing Rule : Clearance Constraint (Gap=0.152mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.127mm) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=1.5mm) (IsPad AND (Name = 'Free-TOOL2')),(InNet('GND'))
 Rule Violations :0
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
@@ -15,7 +21,7 @@ Rule Violations :0
 Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=0.3mm) (Max=0.5mm) (Preferred=0.4mm) (All)
+Processing Rule : Width Constraint (Min=0.3mm) (Max=0.6mm) (Preferred=0.5mm) (All)
 Rule Violations :0
 
 Processing Rule : Routing Topology Rule(Topology=Shortest) (All)
