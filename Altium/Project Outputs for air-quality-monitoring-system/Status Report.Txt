@@ -1,0 +1,21 @@
+Output: Gerber Files
+Type  : Gerber
+From  : Variant [[No Variations]] of Project [air-quality-monitoring-system.PrjPcb]
+   Generated File[air-quality-monitoring-system_pcb.GTO]
+   Generated File[air-quality-monitoring-system_pcb.GTP]
+   Generated File[air-quality-monitoring-system_pcb.GTS]
+   Generated File[air-quality-monitoring-system_pcb.GTL]
+   Generated File[air-quality-monitoring-system_pcb.GBL]
+   Generated File[air-quality-monitoring-system_pcb.GBS]
+   Generated File[air-quality-monitoring-system_pcb.GBP]
+   Generated File[air-quality-monitoring-system_pcb.GBO]
+   Generated File[air-quality-monitoring-system_pcb.GM1]
+   Generated File[air-quality-monitoring-system_pcb.GM]
+   Generated File[air-quality-monitoring-system_pcb.EXTREP]
+   Generated File[air-quality-monitoring-system_pcb.REP]
+
+
+Files Generated   : 12
+Documents Printed : 0
+
+Finished Output Generation At 21:51:22 On 12.11.2025

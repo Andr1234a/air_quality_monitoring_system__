@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=GND Pin=U2-2
+Removed Pin From Net: NetName=GND Pin=U2-3
+Removed Pin From Net: NetName=GND Pin=U2-12
+Removed Pin From Net: NetName=+5V Pin=U2-15
+Removed Pin From Net: NetName=GND Pin=U2-16
+Change Component Footprint: Designator=U2 Old Footprint=MH-Z14A New Footprint=JST_B7B-XH-A(LF)(SN)
+Added Pin To Net: NetName=GND Pin=U2-22
+Added Pin To Net: NetName=+5V Pin=U2-23
+Added Pin To Net: NetName=NetU2_26 Pin=U2-26
+Added Pin To Net: NetName=NetU2_26 Pin=U3-10
+Added Net: Name=NetU2_26
