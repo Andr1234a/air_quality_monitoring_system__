@@ -1,0 +1,53 @@
+# ================= FLASH =========================
+
++seg .vect  -b 0x8000 -m 0x80    -n .vect
++seg .text  -b 0x8080 -m 0x1F80  -n .text
++seg .const -a .text            -n .const -it
++seg .init  -a .const           -n .init
+
+# ================= EEPROM ========================
+
++seg .eeprom -b 0x4000 -m 0x280  -n .eeprom
+
+# ================= RAM ===========================
+
++seg .bsct  -b 0x0000 -m 0x0100  -n .bsct
++seg .ubsct -a .bsct            -n .ubsct
++seg .bit   -a .ubsct           -n .bit   -id
++seg .share -a .bit             -n .share -is
+
++seg .data  -b 0x0100 -m 0x0100  -n .data
++seg .bss   -a .data            -n .bss
+
+# ================= STARTUP =======================
+
+"C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8"
+
+# ================= OBJECT FILES ==================
+
+main.o
+drivers\src\stm8_interrupt_vector.o
+drivers\src\gpio_driver.o
+drivers\src\i2c_driver.o
+drivers\src\uart_driver.o
+drivers\src\tim2_driver.o
+drivers\src\tim1_driver.o
+drivers\src\delay.o
+drivers\src\eeprom.o
+drivers\src\exti_driver.o
+api\src\lcd_api.o
+api\src\htu21_api.o
+api\src\mh-z19b.o
+api\src\pwm.o
+# ================= LIBRARIES =====================
+
+"C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libis0.sm8"
+"C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8"
+
+# ================= DEFINES =======================
+
++def __endzp=@.ubsct
++def __memory=@.bss
++def __startmem=@.bss
++def __endmem=0x1FF
++def __stack=0x2FF
