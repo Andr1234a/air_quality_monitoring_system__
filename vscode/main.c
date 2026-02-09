@@ -14,7 +14,7 @@ int main(void)
 
     TIM1_Encoder_Init(); // ініціалізація таймера-енкодера
 
-    i2c_master_init(F_CPU, 10000); // ініціалізація i2c 
+    i2c_master_init(F_CPU, 10000UL); // ініціалізація i2c 
     lcd_init(); // ініціалізація дисплею
 
 
