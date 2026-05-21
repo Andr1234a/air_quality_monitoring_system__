@@ -11,13 +11,13 @@
 #include "mh-z19b.h"
 #include <stdint.h>
 
-#define FREQUENCY 1000
-#define DUTY_CYCLE 8000
-#define DURATION_ON 100
-#define DURATION_OFF 100
+#define BUZZER_FREQUENCY 1000
+#define BUZZER_DUTY_CYCLE 8000
+#define BUZZER_DURATION_ON 100
+#define BUZZER_DURATION_OFF 100
 #define BUZZER_TIM1_CHANNEL 4
-#define TIM1_PERIOD_INIT 1000
-#define TIM1_PRESCALER_INIT 128
+#define BUZZER_TIM1_PERIOD_INIT 1000
+#define BUZZER_TIM1_PRESCALER_INIT 128
 
 #define LCD_UPDATE_INTERVAL_MS 200
 #define DOUBLE_CLICK_WINDOW_MS 400
@@ -27,14 +27,26 @@
 #define ENCODER_A_PIN_NUM 6
 #define ENCODER_B_PIN_NUM 7
 
+#define ENCODER_SENTINEL 0xFF
+
+#define MAIN_LOOP_TICK_MS 1
+
 typedef enum
 {
     MODE_MONITOR,
     MODE_MENU
 } system_mode_t;
 
+typedef enum
+{
+    MENU_TEMP,
+    MENU_HUM,
+    MENU_CO2,
+    MENU_COUNT
+} menu_step_t;
+
 volatile system_mode_t sys_mode = MODE_MONITOR;
-volatile uint8_t menu_step = 0;
+volatile menu_step_t menu_step = MENU_TEMP;
 volatile uint8_t button_pressed = 0;
 
 float temp, hum, co2;
@@ -48,9 +60,9 @@ int main(void)
 {
     float thresholds[3];
     int8_t encoder_val = 0;
-    int8_t last_encoder_val = 0xFF;
+    int8_t last_encoder_val = ENCODER_SENTINEL;
     system_mode_t last_mode = MODE_MONITOR;
-    uint8_t last_step = 0xFF;
+    uint8_t last_step = ENCODER_SENTINEL;
 
     uint16_t double_click_timer = 0;
     uint8_t click_count = 0;
@@ -75,7 +87,7 @@ int main(void)
 
     i2c_master_init(F_CPU, F_I2S_100KHz);
     lcd_init();
-    Buzzer_Init(BUZZER_TIM1_CHANNEL, TIM1_PERIOD_INIT, TIM1_PRESCALER_INIT);
+    Buzzer_Init(BUZZER_TIM1_CHANNEL, BUZZER_TIM1_PERIOD_INIT, BUZZER_TIM1_PRESCALER_INIT);
 
     save_threshold(38.0f, 60.0f, 1000.0f);
 
@@ -101,7 +113,7 @@ int main(void)
                 else if (click_count >= 2)
                 {
                     sys_mode = MODE_MENU;
-                    menu_step = 0;
+                    menu_step = MENU_TEMP;
                     click_count = 0;
                     double_click_timer = 0;
                 }
@@ -109,7 +121,7 @@ int main(void)
             else
             {
                 menu_step++;
-                if (menu_step > 2)
+                if (menu_step > MENU_COUNT)
                 {
                     save_threshold(thresholds[0], thresholds[1], thresholds[2]);
                     sys_mode = MODE_MONITOR;
@@ -130,7 +142,6 @@ int main(void)
         {
             if (last_mode != MODE_MONITOR)
             {
-                Buzzer_Init(BUZZER_TIM1_CHANNEL, TIM1_PERIOD_INIT, TIM1_PRESCALER_INIT);
                 last_mode = MODE_MONITOR;
                 lcd_clear();
                 lcd_timer = 0;
@@ -154,8 +165,8 @@ int main(void)
                 Encoder_Enable();
 
                 last_mode = MODE_MENU;
-                last_step = 0xFF;
-                last_encoder_val = 0xFF;
+                last_step = ENCODER_SENTINEL;
+                last_encoder_val = ENCODER_SENTINEL;
                 read_threshold(thresholds);
             }
 
@@ -165,37 +176,35 @@ int main(void)
             {
                 lcd_clear();
                 lcd_put_cur(0, 0);
-                if (menu_step == 0)
+                if (menu_step == MENU_TEMP)
                     lcd_send_string("Set T Thr:");
-                else if (menu_step == 1)
+                else if (menu_step == MENU_HUM)
                     lcd_send_string("Set H Thr:");
                 else
                     lcd_send_string("Set CO2 Thr:");
 
-                if (menu_step == 0)
+                if (menu_step == MENU_TEMP)
                     Encoder_SetValue((uint8_t)thresholds[0]);
-                else if (menu_step == 1)
+                else if (menu_step == MENU_HUM)
                     Encoder_SetValue((uint8_t)thresholds[1]);
                 else
                     Encoder_SetValue((uint8_t)(thresholds[2] / CO2_DISPLAY_DIVIDER));
 
                 encoder_val = Encoder_GetValue();
                 last_step = menu_step;
-                last_encoder_val = 0xFF;
+                last_encoder_val = ENCODER_SENTINEL;
             }
 
             if (encoder_val != last_encoder_val)
             {
-                lcd_put_cur(1, 0);
-                lcd_send_string("                ");
-                lcd_put_cur(1, 0);
+                lcd_clear_line(1);
 
-                if (menu_step == 0)
+                if (menu_step == MENU_TEMP)
                 {
                     thresholds[0] = (float)encoder_val;
                     lcd_send_float(thresholds[0]);
                 }
-                else if (menu_step == 1)
+                else if (menu_step == MENU_HUM)
                 {
                     thresholds[1] = (float)encoder_val;
                     lcd_send_float(thresholds[1]);
@@ -209,7 +218,7 @@ int main(void)
             }
         }
 
-        delay_ms(1);
+        delay_ms(MAIN_LOOP_TICK_MS);
     }
 }
 
@@ -267,11 +276,11 @@ void play_alarm(void)
     read_threshold(thresholds);
 
     if (temp > thresholds[0])
-        Buzzer_Start(frequency, duty_cycle, duration_on, duration_off);
+        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_DURATION_ON, BUZZER_DURATION_OFF);
     else if (hum > thresholds[1])
-        Buzzer_Start(frequency, duty_cycle, duration_on, duration_off);
+        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_DURATION_ON, BUZZER_DURATION_OFF);
     else if (co2 > thresholds[2])
-        Buzzer_Start(frequency, duty_cycle, duration_on, duration_off);
+        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_DURATION_ON, BUZZER_DURATION_OFF);
     else
         Buzzer_Stop();
 }

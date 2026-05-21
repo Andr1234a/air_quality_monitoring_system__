@@ -15,9 +15,9 @@
  *
  * @note LCD operates in 4-bit mode through PCF8574.
  * @note Default I2C address of the PCF8574 is 0x27.
- * 
+ *
  * @date 2026-02-04
- * 
+ *
  */
 
 #ifndef LCD_API_H
@@ -61,7 +61,7 @@ void lcd_send_cmd(char cmd);
  * @note This function assumes a PCF8574-based LCD adapter
  *       with I2C address 0x27.
  */
-void lcd_send_data (char data);
+void lcd_send_data(char data);
 
 /**
  * @brief Initializes the LCD via PCF8574 I2C I/O expander.
@@ -96,7 +96,7 @@ void lcd_init(void);
  * @note The string will be displayed starting from the current cursor
  *       position; it does not automatically wrap lines.
  */
-void lcd_send_string (char *str);
+void lcd_send_string(char *str);
 
 /**
  * @brief Sets the cursor position on the LCD.
@@ -159,5 +159,21 @@ void lcd_clear(void);
  * @note The number is displayed starting from the current cursor position.
  */
 void lcd_send_float(float num);
+
+/**
+ * @brief Clears a specific row on the LCD screen.
+ *
+ * This function overwrites the entire specified row with spaces to wipe
+ * any existing characters and then resets the cursor back to the beginning
+ * of that row (column 0). The line width is determined automatically by the
+ * @p LCD_COLS constant.
+ *
+ * @param[in] row The index of the row to be cleared (0 for the first row, 1 for the second).
+ *
+ * @note This function avoids hardcoded string lengths, making it adaptable
+ *       to different screen widths.
+ * @see lcd_put_cur, lcd_send_string
+ */
+void lcd_clear_line(uint8_t row);
 
 #endif

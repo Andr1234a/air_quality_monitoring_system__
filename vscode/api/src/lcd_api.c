@@ -161,3 +161,13 @@ void lcd_send_float(float num)
 
     lcd_send_string(result);
 }
+
+void lcd_clear_line(uint8_t row)
+{
+    uint8_t i;
+    lcd_put_cur(row, 0);
+    for (i = 0; i < LCD_COLS; i++)
+    {
+        lcd_send_string(" ");
+    }
+}
