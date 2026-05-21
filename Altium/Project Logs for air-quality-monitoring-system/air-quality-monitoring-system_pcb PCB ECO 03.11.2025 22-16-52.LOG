@@ -1,0 +1,26 @@
+Removed Pin From Net: NetName=GND Pin=J1-A1
+Removed Pin From Net: NetName=+5V Pin=J1-A4
+Removed Pin From Net: NetName=+5V Pin=J1-A9
+Removed Pin From Net: NetName=GND Pin=J1-A12
+Removed Pin From Net: NetName=GND Pin=J1-B1
+Removed Pin From Net: NetName=+5V Pin=J1-B4
+Removed Pin From Net: NetName=+5V Pin=J1-B9
+Removed Pin From Net: NetName=GND Pin=J1-B12
+Removed Pin From Net: NetName=GND Pin=J1-S1
+Removed Pin From Net: NetName=GND Pin=J1-S2
+Removed Pin From Net: NetName=GND Pin=J1-S3
+Removed Pin From Net: NetName=GND Pin=J1-S4
+Removed Pin From Net: NetName=GND Pin=J1-S5
+Removed Pin From Net: NetName=GND Pin=J1-S6
+Change Component Footprint: Designator=J1 Old Footprint=GCT_USB4081-03-A_REV0.1 New Footprint=216990-0002_MOL
+Change component parameters: Designator = "J1" ("J1"); Footprint = "GCT_USB4081-03-A_REV0.1"; UniqueID = "\AGVYNCSZ" ("\AGVYNCSZ")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "{'manufacturer': u'Molex'}"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "2169900002"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=J1-A1/B12
+Added Pin To Net: NetName=+5V Pin=J1-A4/B9
+Added Pin To Net: NetName=GND Pin=J1-B1/A12
+Added Pin To Net: NetName=+5V Pin=J1-B4/A9

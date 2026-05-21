@@ -1,0 +1,9 @@
+*.txt
+*.elf
+*.hex
+*.o
+*.out
+*.sm8
+flash
+.kanbn/ 
+

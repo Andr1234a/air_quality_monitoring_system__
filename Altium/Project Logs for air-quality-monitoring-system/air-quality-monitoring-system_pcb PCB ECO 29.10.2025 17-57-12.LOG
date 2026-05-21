@@ -1,0 +1,8 @@
+Added Component: Designator=U1(MH-Z14A)
+Added Pin To Net: NetName=GND Pin=U1-2
+Added Pin To Net: NetName=GND Pin=U1-3
+Added Pin To Net: NetName=NetU1_6 Pin=U1-6
+Added Pin To Net: NetName=GND Pin=U1-12
+Added Pin To Net: NetName=+5V Pin=U1-15
+Added Pin To Net: NetName=GND Pin=U1-16
+Added Member To Class: ClassName=Sheet1 Member=Component U1 MH-Z14A

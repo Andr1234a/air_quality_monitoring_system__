@@ -1,0 +1,14 @@
+Added Component: Designator=J1(216990-0002_MOL)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "{'manufacturer': u'Molex'}"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "2169900002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=J1-A1/B12
+Added Pin To Net: NetName=+5V Pin=J1-A4/B9
+Added Pin To Net: NetName=NetJ1_A5 Pin=J1-A5
+Added Pin To Net: NetName=GND Pin=J1-B1/A12
+Added Pin To Net: NetName=+5V Pin=J1-B4/A9
+Added Pin To Net: NetName=NetJ1_B5 Pin=J1-B5
+Added Member To Class: ClassName=Sheet1 Member=Component J1 TYPE-C
