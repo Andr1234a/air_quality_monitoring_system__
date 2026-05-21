@@ -4,13 +4,13 @@
     {
       "label": "Build STM8 firmware",
       "type": "shell",
-      "command": "C:\\Windows\\System32\\cmd.exe",
+      "command": "cmd",
       "args": [
         "/c",
-        "IDEABLD.BAT"
+        "${workspaceFolder}\\IDEABLD.BAT"
       ],
       "options": {
-        "cwd": "${workspaceFolder}\\vscode"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": [],
       "group": {
