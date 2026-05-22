@@ -2,6 +2,38 @@
 #include "htu21_api.h"
 #include "stm8_s.h"
 
+/* Common Configuration & Masks */
+#define HTU21_RESPONSE_SIZE 3
+#define SHIFT_ONE_BYTE 8
+#define HTU21_STATUS_BIT_MASK ((uint8_t)0xFC)
+#define HTU21_CONVERSION_DELAY_MS 50
+
+/* I2C Transfer Directions */
+#define I2C_DIR_WRITE_MODE 0
+#define I2C_DIR_READ_MODE 1
+
+/* I2C Ack/Nack Control for Master Read */
+#define I2C_ACK_SIGNAL 1
+#define I2C_NACK_SIGNAL 0
+
+/* Sentinel Error Values for Cache Initialization */
+#define HTU21_INVALID_TEMP_VALUE -1000.0f
+#define HTU21_INVALID_HUM_VALUE -1000.0f
+
+/* Formula Constants for Temperature Calculation */
+#define HTU21_TEMP_COEFF_MULTI 175.72f
+#define HTU21_TEMP_COEFF_DIV 65536.0f
+#define HTU21_TEMP_COEFF_SUB 46.85f
+
+/* Formula Constants for Humidity Calculation */
+#define HTU21_HUM_COEFF_MULTI 125.0f
+#define HTU21_HUM_COEFF_DIV 65536.0f
+#define HTU21_HUM_COEFF_SUB 6.0f
+
+/* API Standard Error Codes */
+#define HTU21_SUCCESS 0
+#define HTU21_ERROR -1
+
 /**
  * @brief Cached last valid temperature value.
  *
@@ -10,7 +42,7 @@
  *
  * Initialized to an invalid sentinel value.
  */
-static float last_temp = -1000.0f;
+static float last_temp = HTU21_INVALID_TEMP_VALUE;
 
 /**
  * @brief Cached last valid humidity value.
@@ -20,7 +52,7 @@ static float last_temp = -1000.0f;
  *
  * Initialized to an invalid sentinel value.
  */
-static float last_hum = -1000.0f;
+static float last_hum = HTU21_INVALID_HUM_VALUE;
 
 /**
  * @brief Reads multiple bytes from the HTU21 sensor via I2C.
@@ -48,94 +80,94 @@ static int htu21_read_bytes(unsigned char cmd, unsigned char *buf, unsigned char
 
     rc = i2c_master_start();
     if (rc != 0)
-        return -1;
+        return HTU21_ERROR;
 
-    rc = i2c_master_send_addr(HTU21_I2C_ADDR, 0); // write
+    rc = i2c_master_send_addr(HTU21_I2C_ADDR, I2C_DIR_WRITE_MODE); // write
     if (rc != 0)
     {
         i2c_master_stop();
-        return -1;
+        return HTU21_ERROR;
     }
 
     rc = i2c_master_write_byte(cmd);
     if (rc != 0)
     {
         i2c_master_stop();
-        return -1;
+        return HTU21_ERROR;
     }
 
     i2c_master_stop();
 
-    delay_ms(50);
+    delay_ms(HTU21_CONVERSION_DELAY_MS);
 
     rc = i2c_master_start();
     if (rc != 0)
-        return -1;
+        return HTU21_ERROR;
 
-    rc = i2c_master_send_addr(HTU21_I2C_ADDR, 1); // read
+    rc = i2c_master_send_addr(HTU21_I2C_ADDR, I2C_DIR_READ_MODE); // read
     if (rc != 0)
     {
         i2c_master_stop();
-        return -1;
+        return HTU21_ERROR;
     }
 
     for (i = 0; i < len; i++)
     {
-        d = i2c_master_read_byte((i < (len - 1)) ? 1 : 0);
+        d = i2c_master_read_byte((i < (len - 1)) ? I2C_ACK_SIGNAL : I2C_NACK_SIGNAL);
         if (d < 0)
         {
             i2c_master_stop();
-            return -1;
+            return HTU21_ERROR;
         }
         buf[i] = (unsigned char)d;
     }
 
-    return 0;
+    return HTU21_SUCCESS;
 }
 
 // Reads the temperature from the HTU21 sensor.
 int htu21_read_temperature(float *out)
 {
-    unsigned char buf[3];
+    unsigned char buf[HTU21_RESPONSE_SIZE];
     unsigned int t;
     float temp;
 
-    if (htu21_read_bytes(HTU21_READTEMP, buf, 3) != 0)
-        return -1;
+    if (htu21_read_bytes(HTU21_READTEMP, buf, HTU21_RESPONSE_SIZE) != 0)
+        return HTU21_ERROR;
 
-    t = ((unsigned int)buf[0] << 8) | (buf[1] & 0xFC);
+    t = ((unsigned int)buf[0] << SHIFT_ONE_BYTE) | (buf[1] & HTU21_STATUS_BIT_MASK);
 
     temp = (float)t;
-    temp *= 175.72f;
-    temp /= 65536.0f;
-    temp -= 46.85f;
+    temp *= HTU21_TEMP_COEFF_MULTI;
+    temp /= HTU21_TEMP_COEFF_DIV;
+    temp -= HTU21_TEMP_COEFF_SUB;
     last_temp = temp;
     *out = temp;
 
-    return 0;
+    return HTU21_SUCCESS;
 }
 
 // Reads the relative humidity from the HTU21 sensor.
 int htu21_read_humidity(float *out)
 {
-    unsigned char buf[3];
+    unsigned char buf[HTU21_RESPONSE_SIZE];
     unsigned int h;
     float hum;
 
-    if (htu21_read_bytes(HTU21_READHUM, buf, 3) != 0)
-        return -1;
+    if (htu21_read_bytes(HTU21_READHUM, buf, HTU21_RESPONSE_SIZE) != 0)
+        return HTU21_ERROR;
 
-    h = ((unsigned int)buf[0] << 8) | (buf[1] & 0xFC);
+    h = ((unsigned int)buf[0] << SHIFT_ONE_BYTE) | (buf[1] & HTU21_STATUS_BIT_MASK);
 
     hum = (float)h;
-    hum *= 125.0f;
-    hum /= 65536.0f;
-    hum -= 6.0f;
+    hum *= HTU21_HUM_COEFF_MULTI;
+    hum /= HTU21_HUM_COEFF_DIV;
+    hum -= HTU21_HUM_COEFF_SUB;
 
     last_hum = hum;
     *out = hum;
 
-    return 0;
+    return HTU21_SUCCESS;
 }
 
 // Returns the last successfully read temperature from HTU21.
