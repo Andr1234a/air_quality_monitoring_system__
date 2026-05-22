@@ -3,6 +3,32 @@
 #include "delay.h"
 #include "stm8_s.h"
 
+#define LCD_ADDR 0x27
+
+#define LCD_TX_BUFFER_SIZE 4
+
+#define BUF_SIZE_SEND_INT 10
+#define BUF_SIZE_SEND_FLOAT 10
+
+#define BUF_SIZE_TEMP_INT 7
+
+#define LCD_COLS 16
+#define LCD_ROWS 2
+
+#define LCD_FLOAT_DECIMALS 1
+
+#define LCD_FLOAT_ROUND_HALF 0.05f
+#define LCD_FLOAT_MULT_FACTOR 10.0f
+#define LCD_FLOAT_MOD_FACTOR 10
+
+#define LCD_DELAY_POWER_ON_MS 50
+#define LCD_DELAY_INIT_STAGE1_MS 5
+#define LCD_DELAY_INIT_STAGE2_US 200
+#define LCD_DELAY_INIT_STAGE3_MS 10
+
+#define LCD_DELAY_COMMAND_MS 1
+#define LCD_DELAY_CMD_CLEAR_MS 2
+
 // Sends a command byte to the LCD via PCF8574 I2C I/O expander.
 void lcd_send_cmd(char cmd)
 {
@@ -38,25 +64,26 @@ void lcd_send_data(char data)
 void lcd_init(void)
 {
 
-    delay_ms(50);
+    delay_ms(LCD_DELAY_POWER_ON_MS);
     lcd_send_cmd(LCD_CMD_FUNCTION_SET_8BIT);
-    delay_ms(5);
+    delay_ms(LCD_DELAY_INIT_STAGE1_MS);
     lcd_send_cmd(LCD_CMD_FUNCTION_SET_8BIT);
-    delay_us(200);
+    delay_us(LCD_DELAY_INIT_STAGE2_US);
     lcd_send_cmd(LCD_CMD_FUNCTION_SET_8BIT);
-    delay_ms(10);
+    delay_ms(LCD_DELAY_INIT_STAGE3_MS);
     lcd_send_cmd(LCD_CMD_4BIT_MODE);
-    delay_ms(10);
+    delay_ms(LCD_DELAY_INIT_STAGE3_MS);
 
     lcd_send_cmd(LCD_CMD_FUNCTION_SET_4BIT);
-    delay_ms(1);
+    delay_ms(LCD_DELAY_COMMAND_MS);
     lcd_send_cmd(LCD_CMD_EN_LOW);
-    delay_ms(1);
+    delay_ms(LCD_DELAY_COMMAND_MS);
     lcd_send_cmd(LCD_CMD_CLEAR);
-    delay_ms(2);
+    delay_ms(LCD_DELAY_CMD_CLEAR_MS);
     lcd_send_cmd(LCD_CMD_ENTRY_MODE);
-    delay_ms(1);
+    delay_ms(LCD_DELAY_COMMAND_MS);
     lcd_send_cmd(LCD_CMD_DISPLAY_ON);
+    delay_ms(LCD_DELAY_COMMAND_MS);
 }
 
 // ends a null-terminated string to the LCD
@@ -118,13 +145,14 @@ void lcd_clear(void)
     delay_ms(2);
 }
 
-// Sends a floating-point number to the LCD as a string
 void lcd_send_float(float num)
 {
     char result[BUF_SIZE_SEND_FLOAT];
+    char temp_int[BUF_SIZE_TEMP_INT];
     int int_part;
     int frac_part;
     int i = 0;
+    int temp_idx = 0;
 
     if (num < 0)
     {
@@ -135,22 +163,24 @@ void lcd_send_float(float num)
     num += LCD_FLOAT_ROUND_HALF;
 
     int_part = (int)num;
+
     frac_part = (int)(num * LCD_FLOAT_MULT_FACTOR) % LCD_FLOAT_MOD_FACTOR;
 
-    if (int_part >= 100)
+    if (int_part == 0)
     {
-        result[i++] = (int_part / 100) + '0';
-        result[i++] = ((int_part / 10) % 10) + '0';
-        result[i++] = (int_part % 10) + '0';
-    }
-    else if (int_part >= 10)
-    {
-        result[i++] = (int_part / 10) + '0';
-        result[i++] = (int_part % 10) + '0';
+        temp_int[temp_idx++] = '0';
     }
     else
     {
-        result[i++] = int_part + '0';
+        while (int_part > 0 && temp_idx < (BUF_SIZE_TEMP_INT - 1))
+        {
+            temp_int[temp_idx++] = (int_part % 10) + '0';
+            int_part /= 10;
+        }
+    }
+    while (temp_idx > 0)
+    {
+        result[i++] = temp_int[--temp_idx];
     }
 
     result[i++] = '.';

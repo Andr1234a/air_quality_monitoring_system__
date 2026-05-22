@@ -44,8 +44,6 @@
 #define PIN_D6 (1 << 6) // P6
 #define PIN_D7 (1 << 7) // P7
 
-#define LCD_ADDR 0x27 // Адреса PCF8574 на шині I2C
-
 // Бітові маски для шини даних та керування (Ніббли)
 #define LCD_MASK_NIBBLE 0xF0  // Маска для виділення 4-х старших бітів
 #define LCD_CMD_EN_HIGH 0x0C  // Команда: Підсвітка=1, EN=1, RS=0
@@ -65,20 +63,6 @@
 // Адреси рядків пам'яті DDRAM дисплея
 #define LCD_DDRAM_ROW0_ADDR 0x80 // Базова адреса 0-го (першого) рядка
 #define LCD_DDRAM_ROW1_ADDR 0xC0 // Базова адреса 1-го (другого) рядка
-
-// Розміри буферів
-#define LCD_TX_BUFFER_SIZE 4 // Розмір пакету для відправки по I2C
-#define BUF_SIZE_SEND_INT 10 // Розмір буфера для lcd_send_int
-#define BUF_SIZE_SEND_FLOAT 5
-#define LCD_COLS 16
-#define LCD_ROWS 2
-
-#define LCD_FLOAT_DECIMALS 1 // Кількість знаків після коми (зараз 1)
-
-// Похідні дефайни, які автоматично розраховуються залежно від кількості знаків
-#define LCD_FLOAT_ROUND_HALF 0.05f  // Наше округлення для 1 знака (якщо знаків 2, то має бути 0.005f)
-#define LCD_FLOAT_MULT_FACTOR 10.0f // Множник для зсуву коми
-#define LCD_FLOAT_MOD_FACTOR 10     // Дільник для взяття залишку
 
 //______________DRIVER________________________________________
 
