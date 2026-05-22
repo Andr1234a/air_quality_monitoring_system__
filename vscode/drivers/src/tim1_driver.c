@@ -137,37 +137,3 @@ void TIM1_PWM_SetFrequency(uint8_t channel, uint32_t duty, uint32_t freq_hz)
 
 void TIM1_Start(void) { TIM1_CR1 |= 0x01; }
 void TIM1_Stop(void) { TIM1_CR1 &= ~0x01; }
-
-void TIM1_Encoder_Init(void)
-{
-    TIM1_DeInit();
-    CLK_PCKENR1 |= (1 << 7);
-
-    /* PC6, PC7 input pull-up */
-    PC_DDR &= ~((1 << 6) | (1 << 7));
-    PC_CR1 |= ((1 << 6) | (1 << 7));
-    PC_CR2 &= ~((1 << 6) | (1 << 7));
-
-    TIM1_CCMR1 = 0x01;
-    TIM1_CCMR2 = 0x01;
-
-    TIM1_CCER1 = (1 << 0) | (1 << 4);
-    TIM1_SMCR = 0x03;
-
-    TIM1_ARRH = 0xFF;
-    TIM1_ARRL = 0xFF;
-
-    TIM1_BKR |= (1 << 7); // MOE
-
-    TIM1_CNTRH = 0;
-    TIM1_CNTRL = 0;
-
-    TIM1_CR1 |= 0x01;
-}
-
-int16_t TIM1_Encoder_Get(void)
-{
-    uint8_t h = TIM1_CNTRH;
-    uint8_t l = TIM1_CNTRL;
-    return (int16_t)((h << 8) | l);
-}
