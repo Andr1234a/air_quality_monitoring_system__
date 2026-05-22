@@ -13,11 +13,18 @@
 
 #define BUZZER_FREQUENCY 1000
 #define BUZZER_DUTY_CYCLE 8000
-#define BUZZER_DURATION_ON 100
-#define BUZZER_DURATION_OFF 100
 #define BUZZER_TIM1_CHANNEL 4
 #define BUZZER_TIM1_PERIOD_INIT 1000
 #define BUZZER_TIM1_PRESCALER_INIT 128
+
+#define BUZZER_WARN_DURATION_ON 150
+#define BUZZER_WARN_DURATION_OFF 1500
+
+#define BUZZER_ALARM_DURATION_ON 300
+#define BUZZER_ALARM_DURATION_OFF 300
+
+#define CO2_YELLOW_ZONE_PPM 800.0f
+#define CO2_RED_ZONE_PPM 1500.0f
 
 #define LCD_UPDATE_INTERVAL_MS 300
 
@@ -287,7 +294,7 @@ void read_threshold(float *dest)
 
 void draw_hum_temp(void)
 {
-    int co2_val = 0;
+    uint16_t co2_val;
     mhz19_status_t co2_status;
     uint8_t htu_success = 0;
 
@@ -345,8 +352,16 @@ void play_alarm(void)
     float thresholds[3];
     read_threshold(thresholds);
 
-    if (temp > thresholds[0] || hum > thresholds[1] || co2 > thresholds[2])
-        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_DURATION_ON, BUZZER_DURATION_OFF);
+    if (co2 > CO2_RED_ZONE_PPM)
+    {
+        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_ALARM_DURATION_ON, BUZZER_ALARM_DURATION_OFF);
+    }
+    else if (temp > thresholds[0] || hum > thresholds[1] || co2 >= CO2_YELLOW_ZONE_PPM || co2 > thresholds[2])
+    {
+        Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_WARN_DURATION_ON, BUZZER_WARN_DURATION_OFF);
+    }
     else
+    {
         Buzzer_Stop();
+    }
 }
