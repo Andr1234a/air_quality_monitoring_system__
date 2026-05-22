@@ -18,10 +18,10 @@
 #define BUZZER_TIM1_PRESCALER_INIT 128
 
 #define BUZZER_WARN_DURATION_ON 150
-#define BUZZER_WARN_DURATION_OFF 1500
+#define BUZZER_WARN_DURATION_OFF 300
 
-#define BUZZER_ALARM_DURATION_ON 300
-#define BUZZER_ALARM_DURATION_OFF 300
+#define BUZZER_ALARM_DURATION_ON 100
+#define BUZZER_ALARM_DURATION_OFF 100
 
 #define CO2_YELLOW_ZONE_PPM 800.0f
 #define CO2_RED_ZONE_PPM 1500.0f
@@ -49,6 +49,8 @@
 #define DEFAULT_THR_HUM 60.0f
 #define DEFAULT_THR_CO2 1000.0f
 
+#define THRESHOLDS_BUF_SIZE 3
+
 #define LCD_COL_MENU_START 0
 
 #define LCD_LINE_LABELS 0
@@ -71,9 +73,9 @@ typedef enum
 
 typedef enum
 {
-    MENU_TEMP,
-    MENU_HUM,
-    MENU_CO2,
+    MENU_TEMP = 0,
+    MENU_HUM = 1,
+    MENU_CO2 = 2,
     MENU_COUNT
 } menu_step_t;
 
@@ -83,15 +85,18 @@ volatile uint8_t button_pressed = 0;
 
 float temp, hum, co2;
 
+float active_thresholds[THRESHOLDS_BUF_SIZE];
+
 void draw_hum_temp(void);
 void play_alarm(void);
 void save_threshold(float t, float h, float c);
 void read_threshold(float *dest);
 void init_eeprom_settings(void);
+void update_active_thresholds(void);
 
 int main(void)
 {
-    float thresholds[3];
+    float thresholds[THRESHOLDS_BUF_SIZE];
     uint16_t encoder_val = 0;
     uint16_t last_encoder_val = ENCODER_SENTINEL;
     system_mode_t last_mode = MODE_MONITOR;
@@ -122,14 +127,13 @@ int main(void)
     lcd_init();
     Buzzer_Init(BUZZER_TIM1_CHANNEL, BUZZER_TIM1_PERIOD_INIT, BUZZER_TIM1_PRESCALER_INIT);
 
-    /* Перевірка підпису пам'яті та завантаження/ініціалізація структури порогів */
     init_eeprom_settings();
 
     EXTI_CR1 = (EXTI_CR1 & EXTI_PORTC_MASK) | EXTI_PORTC_FALLING;
 
     enableInterrupts();
 
-    read_threshold(thresholds);
+    update_active_thresholds();
 
     while (1)
     {
@@ -157,7 +161,11 @@ int main(void)
                 menu_step++;
                 if (menu_step >= MENU_COUNT)
                 {
-                    save_threshold(thresholds[0], thresholds[1], thresholds[2]);
+
+                    save_threshold(thresholds[MENU_TEMP], thresholds[MENU_HUM], thresholds[MENU_CO2]);
+
+                    update_active_thresholds();
+
                     sys_mode = MODE_MONITOR;
                 }
             }
@@ -218,11 +226,11 @@ int main(void)
                     lcd_send_string("Set CO2 Thr:");
 
                 if (menu_step == MENU_TEMP)
-                    Encoder_SetValue((uint16_t)thresholds[0]);
+                    Encoder_SetValue((uint16_t)thresholds[MENU_TEMP]);
                 else if (menu_step == MENU_HUM)
-                    Encoder_SetValue((uint16_t)thresholds[1]);
+                    Encoder_SetValue((uint16_t)thresholds[MENU_HUM]);
                 else
-                    Encoder_SetValue((uint16_t)(thresholds[2] / CO2_DISPLAY_DIVIDER));
+                    Encoder_SetValue((uint16_t)(thresholds[MENU_CO2] / CO2_DISPLAY_DIVIDER));
 
                 encoder_val = Encoder_GetValue();
                 last_step = menu_step;
@@ -235,18 +243,18 @@ int main(void)
 
                 if (menu_step == MENU_TEMP)
                 {
-                    thresholds[0] = (float)encoder_val;
-                    lcd_send_float(thresholds[0]);
+                    thresholds[MENU_TEMP] = (float)encoder_val;
+                    lcd_send_float(thresholds[MENU_TEMP]);
                 }
                 else if (menu_step == MENU_HUM)
                 {
-                    thresholds[1] = (float)encoder_val;
-                    lcd_send_float(thresholds[1]);
+                    thresholds[MENU_HUM] = (float)encoder_val;
+                    lcd_send_float(thresholds[MENU_HUM]);
                 }
                 else
                 {
-                    thresholds[2] = (float)encoder_val * CO2_DISPLAY_DIVIDER;
-                    lcd_send_int((int)thresholds[2]);
+                    thresholds[MENU_CO2] = (float)encoder_val * CO2_DISPLAY_DIVIDER;
+                    lcd_send_int((int)thresholds[MENU_CO2]);
                 }
                 last_encoder_val = encoder_val;
             }
@@ -269,7 +277,6 @@ void init_eeprom_settings(void)
 
     if (magic[0] != EEPROM_MAGIC_HIGH || magic[1] != EEPROM_MAGIC_LOW)
     {
-
         save_threshold(DEFAULT_THR_TEMP, DEFAULT_THR_HUM, DEFAULT_THR_CO2);
 
         magic[0] = EEPROM_MAGIC_HIGH;
@@ -280,16 +287,16 @@ void init_eeprom_settings(void)
 
 void save_threshold(float t, float h, float c)
 {
-    float data[3];
-    data[0] = t;
-    data[1] = h;
-    data[2] = c;
+    float data[THRESHOLDS_BUF_SIZE];
+    data[MENU_TEMP] = t;
+    data[MENU_HUM] = h;
+    data[MENU_CO2] = c;
     eeprom_write_buff(EEPROM_THRESHOLDS_ADDR, (uint8_t *)data, sizeof(data));
 }
 
 void read_threshold(float *dest)
 {
-    eeprom_read_buff(EEPROM_THRESHOLDS_ADDR, (uint8_t *)dest, sizeof(float) * 3);
+    eeprom_read_buff(EEPROM_THRESHOLDS_ADDR, (uint8_t *)dest, sizeof(float) * THRESHOLDS_BUF_SIZE);
 }
 
 void draw_hum_temp(void)
@@ -347,16 +354,26 @@ void draw_hum_temp(void)
     }
 }
 
+void update_active_thresholds(void)
+{
+    read_threshold(active_thresholds);
+}
+
 void play_alarm(void)
 {
-    float thresholds[3];
-    read_threshold(thresholds);
+    float co2_threshold;
+
+    co2_threshold = active_thresholds[MENU_CO2];
+    if (co2_threshold > CO2_YELLOW_ZONE_PPM)
+    {
+        co2_threshold = CO2_YELLOW_ZONE_PPM;
+    }
 
     if (co2 > CO2_RED_ZONE_PPM)
     {
         Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_ALARM_DURATION_ON, BUZZER_ALARM_DURATION_OFF);
     }
-    else if (temp > thresholds[0] || hum > thresholds[1] || co2 >= CO2_YELLOW_ZONE_PPM || co2 > thresholds[2])
+    else if (temp > active_thresholds[MENU_TEMP] || hum > active_thresholds[MENU_HUM] || co2 >= co2_threshold)
     {
         Buzzer_Start(BUZZER_FREQUENCY, BUZZER_DUTY_CYCLE, BUZZER_WARN_DURATION_ON, BUZZER_WARN_DURATION_OFF);
     }
