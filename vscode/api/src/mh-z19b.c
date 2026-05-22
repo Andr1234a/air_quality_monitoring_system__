@@ -1,5 +1,6 @@
 #include "mh-z19b.h"
 #include "uart_driver.h"
+#include "stm8_s.h"
 
 #define PACKET_SIZE 9
 #define MHZ19_FLUSH_MAX 20
